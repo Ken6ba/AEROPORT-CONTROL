@@ -1,0 +1,36 @@
+AEROPORT CONTROL
+
+menu = tk.Frame(ventana, bg="#14263D", width=220)
+menu.pack(side="left", fill="y")
+menu.pack_propagate(False)
+
+titulo = tk.Label(
+    menu,
+    text="✈ AEROPORT CONTROL",
+    bg="#14263D",
+    fg="white",
+    font=("Arial", 13, "bold")
+)
+titulo.pack(pady=30)
+
+opciones = [
+    "Dashboard",
+    "Vuelos",
+    "Pasajeros",
+    "Reservas",
+    "Boletos",
+    "Reportes"
+]
+
+for opcion in opciones:
+    boton = tk.Button(
+        menu,
+        text=opcion,
+        bg="#14263D",
+        fg="white",
+        font=("Arial", 12),
+        relief="flat",
+        anchor="w",
+        padx=20
+    )
+    boton.pack(fill="x", pady=5)
