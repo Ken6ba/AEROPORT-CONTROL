@@ -58,7 +58,7 @@ def listar_boletos():
     return [dict(fila) for fila in filas]
 
 def crear_reserva(pasajero_id, vuelo_id):
-    """Guarda una reserva y devuelve un mensaje que la pantalla puede mostrar."""
+    "Guarda una reserva y devuelve un mensaje que la pantalla puede mostrar."
     conexion = conectar()
     try:
         # Uso ? para enviar valores de forma segura a SQLite.
@@ -75,7 +75,7 @@ def crear_reserva(pasajero_id, vuelo_id):
         conexion.close()
 
 def crear_pasajero(nombre, documento, nacionalidad, correo):
-    """Valida y guarda un pasajero nuevo en la base de datos."""
+    "Valida y guarda un pasajero nuevo en la base de datos."
     nombre = (nombre or "").strip()
     documento = (documento or "").strip().upper()
     nacionalidad = (nacionalidad or "").strip()
@@ -138,7 +138,7 @@ def crear_pasajero(nombre, documento, nacionalidad, correo):
 
 
 def obtener_pasajero(id_pasajero):
-    """Busca un pasajero por su número de identificación."""
+    "Busca un pasajero por su número de identificación."
     conexion = conectar()
     fila = conexion.execute(
         "SELECT * FROM pasajeros WHERE id = ?", (id_pasajero,)
@@ -151,7 +151,7 @@ def obtener_pasajero(id_pasajero):
 
 
 def actualizar_pasajero(id_pasajero, nombre, documento, nacionalidad, correo):
-    """Actualiza los datos de un pasajero existente."""
+    "Actualiza los datos de un pasajero existente."
     nombre = (nombre or "").strip()
     documento = (documento or "").strip().upper()
     nacionalidad = (nacionalidad or "").strip()
@@ -194,7 +194,7 @@ def actualizar_pasajero(id_pasajero, nombre, documento, nacionalidad, correo):
 
 
 def eliminar_pasajero(id_pasajero):
-    """Elimina un pasajero y sus reservas relacionadas."""
+    "Elimina un pasajero y sus reservas relacionadas."
     conexion = conectar()
     try:
         conexion.execute(
@@ -222,7 +222,7 @@ def eliminar_pasajero(id_pasajero):
 
 
 def obtener_prefijo(nacionalidad):
-    """Devuelve el prefijo del documento según la nacionalidad."""
+    "Devuelve el prefijo del documento según la nacionalidad."
     nacionalidad = (nacionalidad or "").strip().lower()
 
     # Recorro el diccionario para aceptar el nombre del país o su código.

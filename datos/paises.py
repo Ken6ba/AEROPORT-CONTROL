@@ -1,4 +1,4 @@
-"""Paises disponibles para seleccionar en el formulario."""
+"Paises disponibles para seleccionar en el formulario."
 
 PAISES = {
     "Afganistán": "AF",

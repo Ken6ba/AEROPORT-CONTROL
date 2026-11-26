@@ -1,4 +1,4 @@
-"""Genera datos de demostración claramente simulados para SJO."""
+"Genera datos de demostración claramente simulados para SJO."
 
 from datetime import date, timedelta
 import random
