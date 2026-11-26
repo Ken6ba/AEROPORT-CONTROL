@@ -10,6 +10,7 @@ from datos.paises import PAISES
 
 def listar_vuelos(busqueda=""):
     conexion = conectar()
+    # Los signos % permiten buscar una palabra aunque esté en medio del texto.
     texto = "%" + busqueda.strip() + "%"
     filas = conexion.execute(
         """SELECT * FROM vuelos
@@ -18,6 +19,7 @@ def listar_vuelos(busqueda=""):
         (texto, texto, texto),
     ).fetchall()
     conexion.close()
+    # Convierto cada fila en diccionario para que NiceGUI pueda mostrarla.
     return [dict(fila) for fila in filas]
 
 def listar_pasajeros():
@@ -33,6 +35,7 @@ def listar_reservas():
                   vuelos.origen, vuelos.destino, vuelos.fecha,
                   reservas.estado
            FROM reservas
+           -- JOIN combina la reserva con el pasajero y el vuelo relacionados.
            JOIN pasajeros ON pasajeros.id = reservas.pasajero_id
            JOIN vuelos ON vuelos.id = reservas.vuelo_id
            ORDER BY vuelos.fecha"""
@@ -58,6 +61,7 @@ def crear_reserva(pasajero_id, vuelo_id):
     """Guarda una reserva y devuelve un mensaje que la pantalla puede mostrar."""
     conexion = conectar()
     try:
+        # Uso ? para enviar valores de forma segura a SQLite.
         conexion.execute(
             "INSERT INTO reservas (pasajero_id, vuelo_id, fecha_reserva, estado) VALUES (?, ?, ?, ?)",
             (pasajero_id, vuelo_id, date.today().isoformat(), "Confirmada"),
@@ -67,6 +71,7 @@ def crear_reserva(pasajero_id, vuelo_id):
     except Exception:
         return False, "No se pudo crear: el pasajero quizá ya tiene esa reserva."
     finally:
+        # Cierro la conexión aunque ocurra un error.
         conexion.close()
 
 def crear_pasajero(nombre, documento, nacionalidad, correo):
@@ -128,6 +133,7 @@ def crear_pasajero(nombre, documento, nacionalidad, correo):
         return False, "No se pudo registrar. El documento quizá ya existe."
 
     finally:
+        # La conexión siempre se cierra para no dejar recursos abiertos.
         conexion.close()
 
 
@@ -219,6 +225,7 @@ def obtener_prefijo(nacionalidad):
     """Devuelve el prefijo del documento según la nacionalidad."""
     nacionalidad = (nacionalidad or "").strip().lower()
 
+    # Recorro el diccionario para aceptar el nombre del país o su código.
     for pais, prefijo in PAISES.items():
         if pais.lower() == nacionalidad or prefijo.lower() == nacionalidad:
             return prefijo
@@ -231,17 +238,3 @@ def opciones_pasajeros():
 def opciones_vuelos():
     vuelos = listar_vuelos()
     return {str(v["id"]): v["codigo"] + " - " + v["destino"] for v in vuelos}
-
-def obtener_pasajero(id_pasajero):
-    # Buscará un pasajero por su número de identificación.
-    pass
-
-
-def actualizar_pasajero(id_pasajero, nombre, documento, nacionalidad, correo):
-    # Guardará los cambios del pasajero.
-    pass
-
-
-def eliminar_pasajero(id_pasajero):
-    # Eliminará el pasajero y sus reservas relacionadas.
-    pass

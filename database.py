@@ -8,7 +8,9 @@ RUTA_BASE = Path(__file__).parent / "aeroport.db"
 def conectar():
     "Abre la base de datos y permite acceder a las columnas por nombre."
     conexion = sqlite3.connect(RUTA_BASE)
+    # Así puedo usar fila["nombre"] en vez de recordar posiciones numéricas.
     conexion.row_factory = sqlite3.Row
+    # Activo las relaciones entre tablas para proteger reservas y boletos.
     conexion.execute("PRAGMA foreign_keys = ON")
     return conexion
 
@@ -43,6 +45,7 @@ def crear_tablas():
             vuelo_id INTEGER NOT NULL,
             fecha_reserva TEXT NOT NULL,
             estado TEXT NOT NULL,
+            -- Evita que un pasajero reserve dos veces el mismo vuelo.
             UNIQUE(pasajero_id, vuelo_id),
             FOREIGN KEY (pasajero_id) REFERENCES pasajeros(id),
             FOREIGN KEY (vuelo_id) REFERENCES vuelos(id)
@@ -67,6 +70,7 @@ def contar(tabla):
     tablas_permitidas = ["vuelos", "pasajeros", "reservas", "boletos"]
     if tabla not in tablas_permitidas:
         return 0
+    # Solo permito nombres de tablas conocidos antes de formar la consulta.
     conexion = conectar()
     resultado = conexion.execute("SELECT COUNT(*) AS total FROM " + tabla).fetchone()
     conexion.close()

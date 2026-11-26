@@ -8,11 +8,13 @@ from database import conectar, crear_tablas
 def generar_datos():
     crear_tablas()
     conexion = conectar()
+    # Si ya hay vuelos, no vuelvo a insertar los datos cada vez que inicio.
     total = conexion.execute("SELECT COUNT(*) AS total FROM vuelos").fetchone()["total"]
     if total > 0:
         conexion.close()
         return
 
+    # La semilla hace que los datos simulados sean repetibles.
     random.seed(10)
     nombres = [
         ("Ana López", "CR-1001", "Costa Rica", "ana@gmail.com"),
@@ -31,6 +33,7 @@ def generar_datos():
     destinos = [("GUA", "Ciudad de Guatemala"), ("PTY", "Ciudad de Panamá"), ("MEX", "Ciudad de México"), ("MIA", "Miami")]
     estados = ["Programado", "A tiempo", "Completado"]
     inicio = date(2026, 11, 1)
+    # Uso un for porque conozco la cantidad exacta de 60 vuelos.
     for numero in range(60):
         dia = inicio + timedelta(days=numero)
         codigo_destino, destino = destinos[numero % len(destinos)]

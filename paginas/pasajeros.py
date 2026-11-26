@@ -39,6 +39,7 @@ def pasajeros():
     mensaje = ui.label().classes("text-blue-300")
 
     def actualizar_lista_paises(valor_letra):
+        # El segundo menú se reconstruye según la letra seleccionada.
         if not valor_letra:
             nacionalidad.options = []
             nacionalidad.value = None
@@ -56,6 +57,7 @@ def pasajeros():
         nacionalidad.update()
 
     def colocar_prefijo(evento):
+        # No obligo al usuario a escribir CR, GT o PA manualmente.
         prefijo = obtener_prefijo(evento.value)
         documento.value = prefijo + "-" if prefijo else ""
 
@@ -79,6 +81,7 @@ def pasajeros():
     ).classes("w-full mt-4")
 
     def refrescar():
+        # Después de guardar, editar o borrar vuelvo a consultar SQLite.
         tabla.update_rows(listar_pasajeros())
         selector.options = opciones_pasajeros()
         selector.update()
@@ -94,6 +97,7 @@ def pasajeros():
         correo.value = ""
 
     def cargar_pasajero(evento):
+        # Al seleccionar un pasajero, cargo sus datos en el formulario.
         if not evento.value:
             limpiar_formulario()
             return
